@@ -5,6 +5,13 @@
  */
 public class pc {
     public static void main(String[] args) {
-        System.out.println(111);
+        //抓包token
+        String zsxq_access_token ="";
+        //圈子ID
+        String groupID = "";
+        //保存路径
+        String path = "";
+
+
     }
 }
