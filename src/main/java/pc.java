@@ -1,8 +1,10 @@
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -24,7 +26,7 @@ public class pc {
     /**
      * 文件保存路径
      */
-    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/大余";
+    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/大余/";
 
     public static void main(String[] args) {
         // 设置线程池数量
@@ -62,15 +64,26 @@ public class pc {
                 .execute().body();
 
         String downlodaUrl = JSONUtil.parseObj(result).getJSONObject("resp_data").getStr("download_url");
+        //解析文件名
         System.out.println("下载地址：" + downlodaUrl);
+        //下载文件
+        download(downlodaUrl,path);
+    }
+
+    /**
+     *
+     * @param downlodaUrl 下载地址
+     * @param path 保存路径
+     */
+    private static void download(String downlodaUrl, String path) {
         try {
-            //long file= HttpUtil.downloadFile(downlodaUrl,path);
-            //System.out.println("下载文件："+downlodaUrl+":"+file);
+           //获取用户名
+            String filename = URLUtil.decode(StrUtil.subBetween(downlodaUrl,"attname=","&"),"utf-8");
+            System.out.println("文件名"+filename);
+            long file = HttpUtil.downloadFile(downlodaUrl,path+filename);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(downlodaUrl);
         }
-
-
     }
 
     /**
@@ -89,13 +102,11 @@ public class pc {
 
         //取出时间
         String temp = String.valueOf(JSONUtil.parseObj(jsonArray.get(jsonArray.size() - 1).toString()).getJSONObject("file").get("create_time"));
-        // String temp=JSONUtil.parseObj(jsonArray.get(jsonArray.size()-1)).getJSONObject("files").getStr("download_count");
         //https://api.zsxq.com/v2/groups/51284855218444/files?count=20&end_time=2021-06-14T09:23:21.643+0800
         System.out.println("取出的时间" + temp);
         // 循环遍历id
         for (Object object : jsonArray) {
             String file_id = JSONUtil.parseObj(object.toString()).getJSONObject("file").getStr("file_id");
-            //System.out.println("file_id:"+file_id);
             fileIdList.add(file_id);
         }
         fileIdList = fileIdList.stream().distinct().collect(Collectors.toList());
