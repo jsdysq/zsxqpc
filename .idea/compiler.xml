@@ -6,12 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="zsxqpc" />
+        <module name="zs" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="zs" target="1.5" />
+      <module name="zs" target="11" />
       <module name="zsxqpc" target="1.5" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="zs" options="" />
+    </option>
   </component>
 </project>
