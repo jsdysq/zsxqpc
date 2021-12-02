@@ -1,10 +1,15 @@
+import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -21,7 +26,7 @@ public class pc {
     /**
      * 抓包token
      */
-    private static final String ZSXQ_ACCESS_TOKEN = "D621F6F8-E5B9-242A-02B2-27EC3B96073E_610B63E6232A4560";
+    private static final String ZSXQ_ACCESS_TOKEN = "D9BE997B-9344-0F1B-5A34-FF5FFEFB0C57_610B63E6232A4560";
 
     /**
      * 文件保存路径
@@ -99,11 +104,24 @@ public class pc {
         String body = SetHandler(url, zsxq_access_token, end_time);
         JSONArray jsonArray = JSONUtil.parseArray(JSONUtil.parseObj(body).getJSONObject("resp_data").getStr("files"));
         System.out.println("测试数据" + jsonArray);
-
         //取出时间
-        String temp = String.valueOf(JSONUtil.parseObj(jsonArray.get(jsonArray.size() - 1).toString()).getJSONObject("file").get("create_time"));
+
+        String temp = JSONUtil.parseObj(jsonArray.get(jsonArray.size() - 1).toString()).getJSONObject("file").getStr("create_time");
         //https://api.zsxq.com/v2/groups/51284855218444/files?count=20&end_time=2021-06-14T09:23:21.643+0800
-        System.out.println("取出的时间" + temp);
+        //temp=StrUtil.replace(temp,":","%3A").replace("+","%2B");
+        System.out.println("原来的时间"+temp);
+
+        try {
+            temp = URLEncoder.encode(temp,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("这是时间编码格式化"+temp);
+        if (!temp.equals(end_time)){
+            end_time=temp;
+            getFileIdList(zsxq_access_token,groupID,end_time);
+        }
         // 循环遍历id
         for (Object object : jsonArray) {
             String file_id = JSONUtil.parseObj(object.toString()).getJSONObject("file").getStr("file_id");
@@ -118,12 +136,15 @@ public class pc {
     public static String SetHandler(String url, String zsxq_access_token, String end_time) {
         if (!"".equals(end_time)) {
             url = url + "&end_time=" + end_time;
+            System.out.println("请求的url"+url);
         }
         //链式请求
+
         return HttpRequest.get(url)
-                .header(Header.COOKIE, "zsxq_access_token=" + zsxq_access_token)
+                .header(Header.COOKIE, "abtest_env=product; zsxq_access_token=" + zsxq_access_token)
                 .header(Header.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36")
                 .timeout(20000)
+                .setFollowRedirects(true)
                 .execute().body();
     }
 
