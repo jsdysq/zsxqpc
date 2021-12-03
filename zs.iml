@@ -10,5 +10,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.7.16" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp:okhttp:2.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.8" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" level="project" />
+    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
   </component>
 </module>
