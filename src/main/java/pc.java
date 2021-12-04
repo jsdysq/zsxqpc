@@ -37,14 +37,14 @@ public class pc {
     /**
      * 文件保存路径
      */
-    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/大余/";
+    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/代码审计/";
     public static List<String> fileIdList = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
         // 设置线程池数量
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
         //圈子ID
-        String groupId = "51284855218444";
+        String groupId = "221225";
         //获取文件id
         List<String> idList = getFileIdList(ZSXQ_ACCESS_TOKEN, groupId, "");
         //下载文件
