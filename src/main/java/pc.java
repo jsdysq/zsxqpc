@@ -33,23 +33,23 @@ public class pc {
     /**
      * 抓包token
      */
-    private static final String ZSXQ_ACCESS_TOKEN = "97E31117-F75B-D316-8E6D-AA36EBE9E879_610B63E6232A4560";
+    private static final String ZSXQ_ACCESS_TOKEN = "1C68C68C-1248-3771-9115-3841E7E16F41_610B63E6232A4560";
     /**
      * 文件保存路径
      */
-    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/代码审计/";
+    private static final String PATH = "/Users/tao/IdeaProjects/爬虫/安全之路/";
     public static List<String> fileIdList = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
         // 设置线程池数量
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
         //圈子ID
-        String groupId = "221225";
+        String groupId = "88511411242152";
         //获取文件id
         List<String> idList = getFileIdList(ZSXQ_ACCESS_TOKEN, groupId, "");
         //下载文件
         idList.parallelStream().forEach(fileId -> {
-            downFile(ZSXQ_ACCESS_TOKEN, fileId, PATH);
+            //downFile(ZSXQ_ACCESS_TOKEN, fileId, PATH);
         });
         System.out.println("本次一共下载:" + idList.size() + "个文件");
 
@@ -105,6 +105,7 @@ public class pc {
             }
             //取出时间
             String temp = JSONUtil.parseObj(jsonArray.get(jsonArray.size() - 1).toString()).getJSONObject("file").getStr("create_time");
+            System.out.println(temp);
             temp = URLEncoder.encode(temp, "UTF-8");
             if (!temp.equals(end_time)) {
                 end_time = temp;
